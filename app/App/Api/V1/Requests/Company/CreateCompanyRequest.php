@@ -2,18 +2,13 @@
 
 namespace App\App\Api\V1\Requests\Company;
 
+use App\App\Api\V1\Requests\BaseApiRequest;
 use App\Domain\Company\Dto\CreateCompanyData;
 use App\Domain\Company\Rules\Edrpou;
 use App\Domain\Company\Services\EdrpouValidator;
-use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCompanyRequest extends FormRequest
+class CreateCompanyRequest extends BaseApiRequest
 {
-    public function authorize(): bool
-    {
-        return false;
-    }
-
     public function rules(EdrpouValidator $validator): array
     {
         return [

@@ -29,7 +29,7 @@ final readonly class CreateOrUpdateCompanyAction
      */
     public function execute(CreateCompanyData $data): Company
     {
-        $existingCompany = $this->companyReadEloquent->findByEdrpou($data->edrpou);
+        $existingCompany = $this->companyReadEloquent->findByEdrpou(edrpou: $data->edrpou);
 
         try {
             return DB::transaction(function () use ($existingCompany, $data): Company {

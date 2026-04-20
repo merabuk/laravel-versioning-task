@@ -12,15 +12,20 @@ class CompanyReadEloquent extends BaseCompanyEloquent
     /**
      * @throws CompanyFindException
      */
-    public function getByEdrpou(string $edrpou): Company
+    public function getByEdrpou(string $edrpou, bool $withRelations = false): Company
     {
-        return $this->findByEdrpou($edrpou) ?? throw new CompanyFindException('edrpou');
+        return $this->findByEdrpou(edrpou: $edrpou, withRelations: $withRelations) ?? throw new CompanyFindException('edrpou');
     }
 
-    public function findByEdrpou(string $edrpou): ?Company
+    public function findByEdrpou(string $edrpou, bool $withRelations = false): ?Company
     {
-        return $this->model->newQuery()
-            ->where('edrpou', '=', $edrpou)
-            ->first();
+        $query = $this->model->newQuery()
+            ->where('edrpou', '=', $edrpou);
+
+        if ($withRelations) {
+            $query->with(['versions']);
+        }
+
+        return $query->first();
     }
 }

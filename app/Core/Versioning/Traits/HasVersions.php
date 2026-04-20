@@ -8,6 +8,7 @@ use App\Core\Versioning\Models\Version;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @property Collection<int, Version> $versions
@@ -19,12 +20,12 @@ trait HasVersions
 {
     public function versions(): MorphMany
     {
-        return $this->morphMany(Version::class, 'versionable');
+        return $this->morphMany(Version::class, 'versionable')->latest('version');
     }
 
-    public function latestVersion(): ?Version
+    public function latestVersion(): MorphOne
     {
-        return $this->versions()->latest('version')->first();
+        return $this->versions()->one()->latestOfMany();
     }
 
     abstract public function getVersioningFields(): array;
