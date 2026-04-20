@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'api_domain' => env('APP_API_DOMAIN', 'localhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -77,6 +78,8 @@ return [
     | set to any locale for which you plan to have translation strings.
     |
     */
+
+    'locales' => ['en'],
 
     'locale' => env('APP_LOCALE', 'en'),
 

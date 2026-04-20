@@ -29,6 +29,7 @@ class VersionFactory extends Factory
         return $this->state(fn () => [
             'versionable_id' => $versionable->getKey(),
             'versionable_type' => $versionable->getMorphClass(),
+            'snapshot' => $versionable->toSnapshot(),
         ]);
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\Versioning\Exceptions;
 
-use App\Exceptions\EntityFindException;
+use App\Infrastructure\Exceptions\EntityFindException;
 
 class VersionFindException extends EntityFindException
 {

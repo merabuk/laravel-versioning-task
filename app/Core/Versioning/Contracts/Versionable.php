@@ -15,7 +15,7 @@ interface Versionable
 {
     public function versions(): MorphMany;
 
-    public function lastVersion(): ?Version;
+    public function latestVersion(): ?Version;
 
     public function getVersioningFields(): array;
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core\Versioning\Models;
 
 use App\Core\Versioning\Contracts\Versionable;
+use App\Core\Versioning\Database\Factories\VersionFactory;
 use App\Core\Versioning\Enums\StatusEnum;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $version
  * @property Carbon $created_at
  * @property-read Versionable $versionable
+ *
+ * @method static VersionFactory factory($count = null, $state = [])
  */
 class Version extends Model
 {
@@ -36,10 +39,6 @@ class Version extends Model
         'version' => 1,
     ];
 
-    protected $appends = [
-        'status'
-    ];
-
     public function versionable(): MorphTo
     {
         return $this->morphTo();
@@ -51,10 +50,13 @@ class Version extends Model
     protected function casts(): array
     {
         return [
-            'status' => StatusEnum::class,
             'snapshot' => 'array',
             'version' => 'integer',
-            'created_at' => 'datetime',
         ];
+    }
+
+    protected static function newFactory(): VersionFactory
+    {
+        return VersionFactory::new();
     }
 }

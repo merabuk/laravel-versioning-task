@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-namespace App\Exceptions;
+namespace App\Infrastructure\Exceptions;
 
 abstract class DatabaseException extends ServerException {}
