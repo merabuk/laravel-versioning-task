@@ -1,5 +1,7 @@
 <?php
 
+use App\Domain\Company\Models\Company;
+
 return [
     'api_domain' => env('APP_API_DOMAIN', 'localhost'),
 
@@ -134,6 +136,10 @@ return [
     | Shorthand for defining model morph map classes.
     |
     */
-
-    'model_morph_map' => [],
+    /**
+     * @see https://laravel.com/docs/12.x/eloquent-relationships#custom-polymorphic-types
+     */
+    'model_morph_map' => [
+        Company::class,
+    ],
 ];

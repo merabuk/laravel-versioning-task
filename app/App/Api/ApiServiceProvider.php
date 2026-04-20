@@ -7,7 +7,6 @@ namespace App\App\Api;
 use App\Infrastructure\Middleware\AddAcceptJsonHeader;
 use App\Infrastructure\Middleware\TrimSpacesMiddleware;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,8 +27,8 @@ class ApiServiceProvider extends ServiceProvider
                 SubstituteBindings::class,
                 AddAcceptJsonHeader::class,
                 TrimSpacesMiddleware::class,
-                ThrottleRequests::class . ':api',
             ])
+            ->as('public-api.v1.')
             ->group(self::V1_ROUTES);
     }
 }

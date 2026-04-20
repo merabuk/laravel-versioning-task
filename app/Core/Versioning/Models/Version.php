@@ -8,6 +8,8 @@ use App\Core\Versioning\Contracts\Versionable;
 use App\Core\Versioning\Database\Factories\VersionFactory;
 use App\Core\Versioning\Enums\StatusEnum;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -22,8 +24,11 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  *
  * @method static VersionFactory factory($count = null, $state = [])
  */
+#[UseFactory(VersionFactory::class)]
 class Version extends Model
 {
+    use HasFactory;
+
     public const ?string UPDATED_AT = null;
 
     public StatusEnum $temporaryStatus;
@@ -53,10 +58,5 @@ class Version extends Model
             'snapshot' => 'array',
             'version' => 'integer',
         ];
-    }
-
-    protected static function newFactory(): VersionFactory
-    {
-        return VersionFactory::new();
     }
 }

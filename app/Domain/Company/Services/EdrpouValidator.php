@@ -10,6 +10,10 @@ final class EdrpouValidator
 
     public function validate(string $edrpou): bool
     {
+        if (!preg_match(self::REGEX, $edrpou)) {
+            return false;
+        }
+
         $digits = array_map(intval(...), mb_str_split($edrpou));
         $weights = EdrpouChecksum::weightsFor((int) $edrpou);
         $expected = EdrpouChecksum::calculate(array_slice($digits, 0, 7), $weights);

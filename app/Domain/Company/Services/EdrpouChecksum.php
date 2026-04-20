@@ -16,9 +16,13 @@ class EdrpouChecksum
             : self::WEIGHTS_ALTERNATE;
     }
 
+    /**
+     * @param int[] $digits
+     * @param int[] $weights
+     */
     public static function calculate(array $digits, array $weights): int
     {
-        $sum = array_sum(array_map(fn ($d, $w) => $d * $w, $digits, $weights));
+        $sum = array_sum(array_map(fn (int $d, int $w) => $d * $w, $digits, $weights));
         $remainder = $sum % 11;
 
         if ($remainder < 10) {
@@ -26,7 +30,7 @@ class EdrpouChecksum
         }
 
         $secondary = array_map(fn (int $w) => $w + 2, $weights);
-        $sum = array_sum(array_map(fn ($d, $w) => $d * $w, $digits, $secondary));
+        $sum = array_sum(array_map(fn (int $d, int $w) => $d * $w, $digits, $secondary));
         $remainder = $sum % 11;
 
         return $remainder >= 10 ? 0 : $remainder;

@@ -14,7 +14,7 @@ class CreateCompanyRequest extends BaseApiRequest
         return [
             'name' => ['bail', 'required', 'string', 'max:256'],
             'edrpou' => ['bail', 'required', 'string', 'max:10', new Edrpou($validator)],
-            'address' => ['bail', 'required', 'string', 'max:65_535'],
+            'address' => ['bail', 'required', 'string', 'max:' . 65_535],
         ];
     }
 

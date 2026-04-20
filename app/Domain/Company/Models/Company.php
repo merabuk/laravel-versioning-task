@@ -7,6 +7,8 @@ namespace App\Domain\Company\Models;
 use App\Core\Versioning\Contracts\Versionable;
 use App\Core\Versioning\Traits\HasVersions;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Company\Database\Factories\CompanyFactory;
 
@@ -20,8 +22,10 @@ use App\Domain\Company\Database\Factories\CompanyFactory;
  *
  * @method static CompanyFactory factory($count = null, $state = [])
  */
+#[UseFactory(CompanyFactory::class)]
 class Company extends Model implements Versionable
 {
+    use HasFactory;
     use HasVersions;
 
     protected $fillable = ['name', 'edrpou', 'address'];
@@ -29,10 +33,5 @@ class Company extends Model implements Versionable
     public function getVersioningFields(): array
     {
         return ['name', 'edrpou', 'address'];
-    }
-
-    protected static function newFactory(): CompanyFactory
-    {
-        return CompanyFactory::new();
     }
 }

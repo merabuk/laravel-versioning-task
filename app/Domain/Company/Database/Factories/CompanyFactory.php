@@ -25,10 +25,24 @@ class CompanyFactory extends Factory
         ];
     }
 
+    public function withName(string $name): self
+    {
+        return $this->state(fn () => [
+            'name' => $name,
+        ]);
+    }
+
     public function withEdrpou(string $edrpou): self
     {
         return $this->state(fn () => [
             'edrpou' => $edrpou,
+        ]);
+    }
+
+    public function withAddress(string $address): self
+    {
+        return $this->state(fn () => [
+            'address' => $address,
         ]);
     }
 }
