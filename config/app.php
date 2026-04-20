@@ -123,4 +123,14 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Model Morph Map Classes
+    |--------------------------------------------------------------------------
+    |
+    | Shorthand for defining model morph map classes.
+    |
+    */
+
+    'model_morph_map' => [],
 ];
