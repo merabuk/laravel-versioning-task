@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\App\Api\V1\Exceptions\Handler as ApiV1Handler;
 use App\Infrastructure\Exceptions\Handler as InfrastructureHandler;
 use App\Infrastructure\Middleware\SetAppLocale;
@@ -30,4 +32,5 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return null;
         });
-    })->create();
+    })
+    ->create();
