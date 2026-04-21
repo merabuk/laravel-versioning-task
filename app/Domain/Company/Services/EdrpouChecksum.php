@@ -6,9 +6,13 @@ namespace App\Domain\Company\Services;
 
 class EdrpouChecksum
 {
-    private const array WEIGHTS_DEFAULT   = [1, 2, 3, 4, 5, 6, 7];
+    private const array WEIGHTS_DEFAULT = [1, 2, 3, 4, 5, 6, 7];
+
     private const array WEIGHTS_ALTERNATE = [7, 1, 2, 3, 4, 5, 6];
 
+    /**
+     * @return int[]
+     */
     public static function weightsFor(int $value): array
     {
         return ($value < 30_000_000 || $value > 60_000_000)

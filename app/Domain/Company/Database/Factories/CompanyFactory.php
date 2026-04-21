@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\Company\Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Domain\Company\Models\Company;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @mixin Factory<Company>
+ * @extends Factory<Company>
  */
 class CompanyFactory extends Factory
 {

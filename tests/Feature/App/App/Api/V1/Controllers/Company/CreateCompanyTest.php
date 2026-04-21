@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Feature\App\App\Api\V1\Controllers\Company;
+namespace Tests\Feature\App\App\Api\V1\Controllers\Company;
 
 use App\App\Api\V1\Controllers\Company\CreateCompanyController;
 use App\Core\Versioning\Enums\StatusEnum;
@@ -136,8 +136,12 @@ class CreateCompanyTest extends TestCase
         $this->postJson(route($this->route), $payload)
             ->assertOk()
             ->assertJsonStructure(['status', 'company_id', 'version'])
-            ->assertJsonFragment(['status' => $expectedResponse['status']])
-            ->assertJsonFragment(['version' => $expectedResponse['version']]);
+            ->assertJsonFragment([
+                'status' => $expectedResponse['status'],
+            ])
+            ->assertJsonFragment([
+                'version' => $expectedResponse['version'],
+            ]);
     }
 
     public static function companyProvider(): iterable

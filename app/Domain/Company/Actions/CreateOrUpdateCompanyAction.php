@@ -46,9 +46,9 @@ final readonly class CreateOrUpdateCompanyAction
         } catch (Throwable $e) {
             if ($existingCompany) {
                 throw new EntityUpdateException(message: 'Company could not be updated', previous: $e);
-            } else {
-                throw new EntityCreateException(message: 'Company could not be created', previous: $e);
             }
+
+            throw new EntityCreateException(message: 'Company could not be created', previous: $e);
         }
     }
 }

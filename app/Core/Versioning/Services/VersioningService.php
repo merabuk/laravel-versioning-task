@@ -15,22 +15,23 @@ final readonly class VersioningService
     public function __construct(
         private VersionReadEloquent $versionReadEloquent,
         private VersionWriteEloquent $versionWriteEloquent,
-    ) {}
+    ) {
+    }
 
     public function handle(Versionable $versionable): void
     {
         $existingVersion = $this->versionReadEloquent->findByVersionable($versionable);
 
-        $oldSnapshot = $this->normalizeSnapshot($existingVersion?->snapshot ?? []);
+        $oldSnapshot = $this->normalizeSnapshot($existingVersion->snapshot ?? []);
         $newSnapshot = $this->normalizeSnapshot($versionable->toSnapshot());
 
         $status = match (true) {
-            null === $existingVersion => StatusEnum::Created,
+            $existingVersion === null => StatusEnum::Created,
             $oldSnapshot !== $newSnapshot => StatusEnum::Updated,
             default => StatusEnum::Duplicate,
         };
 
-        if ($status === StatusEnum::Duplicate) {
+        if ($existingVersion && $status === StatusEnum::Duplicate) {
             $existingVersion->temporaryStatus = StatusEnum::Duplicate;
 
             $versionable->setRelation('latestVersion', $existingVersion);
@@ -51,6 +52,10 @@ final readonly class VersioningService
         $versionable->setRelation('latestVersion', $savedVersion);
     }
 
+    /**
+     * @param array<string, mixed> $snapshot
+     * @return array<string, mixed>
+     */
     private function normalizeSnapshot(array $snapshot): array
     {
         ksort($snapshot);

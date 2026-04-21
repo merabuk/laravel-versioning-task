@@ -8,8 +8,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseRequest extends FormRequest
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function validationData(): array
     {
-        return [...$this->all(), ...$this->route()->parameters];
+        return [...$this->all(), ...$this->route()->parameters ?? []];
     }
 }

@@ -12,12 +12,16 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.9",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.24",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
-        "phpunit/phpunit": "^11.5.50"
+        "phpro/grumphp": "^2.20",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5.50",
+        "symplify/easy-coding-standard": "^13.0"
     },
     "autoload": {
         "psr-4": {
@@ -65,6 +69,13 @@
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "lint": "ecs check",
+        "lint:fix": "ecs check --fix",
+        "phpstan": "phpstan analyse --memory-limit=2G -c phpstan.neon",
+        "analyze": [
+            "@lint",
+            "@phpstan"
         ]
     },
     "extra": {
@@ -78,7 +89,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "phpro/grumphp": true
         }
     },
     "minimum-stability": "stable",

@@ -10,5 +10,6 @@ final readonly class CreateCompanyData
         public string $name,
         public string $edrpou,
         public string $address,
-    ) {}
+    ) {
+    }
 }

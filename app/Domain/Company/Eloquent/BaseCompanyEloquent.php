@@ -10,5 +10,6 @@ abstract class BaseCompanyEloquent
 {
     public function __construct(
         protected Company $model
-    ) {}
+    ) {
+    }
 }

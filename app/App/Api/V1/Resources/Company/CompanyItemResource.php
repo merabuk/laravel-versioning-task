@@ -13,10 +13,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class CompanyItemResource extends JsonResource
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(Request $request): array
     {
         return [
-            'status' => $this->latestVersion?->temporaryStatus->value,
+            'status' => $this->latestVersion?->temporaryStatus?->value,
             'company_id' => $this->id,
             'version' => $this->latestVersion?->version,
         ];

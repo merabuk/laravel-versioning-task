@@ -36,7 +36,7 @@ class CompanySeeder extends Seeder
 
         $raw = [];
 
-        for ($i = 1; $i < $count + 1; ++$i) {
+        for ($i = 1; $i < $count + 1; $i++) {
             $raw[] = Version::factory()
                 ->forVersionable($company)
                 ->withVersion($i)

@@ -12,7 +12,7 @@ class TrimSpacesMiddleware
 {
     public function handle(Request $request, Closure $next): SymfonyResponse
     {
-        if (!in_array($request->method(), ['POST', 'PATCH', 'PUT'], true)) {
+        if (! in_array($request->method(), ['POST', 'PATCH', 'PUT'], true)) {
             return $next($request);
         }
 
@@ -22,6 +22,10 @@ class TrimSpacesMiddleware
         return $next($request);
     }
 
+    /**
+     * @param array<string, mixed> $input
+     * @return array<string, mixed>
+     */
     private function process(array $input): array
     {
         foreach ($input as &$item) {

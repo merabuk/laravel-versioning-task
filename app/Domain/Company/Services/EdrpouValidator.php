@@ -10,7 +10,7 @@ final class EdrpouValidator
 
     public function validate(string $edrpou): bool
     {
-        if (!preg_match(self::REGEX, $edrpou)) {
+        if (! preg_match(self::REGEX, $edrpou)) {
             return false;
         }
 

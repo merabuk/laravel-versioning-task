@@ -9,7 +9,7 @@ use App\Core\Versioning\Models\Version;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @mixin Factory<Version>
+ * @extends Factory<Version>
  */
 class VersionFactory extends Factory
 {

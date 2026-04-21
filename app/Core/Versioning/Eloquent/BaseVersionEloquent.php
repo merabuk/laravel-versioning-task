@@ -10,5 +10,6 @@ abstract class BaseVersionEloquent
 {
     public function __construct(
         protected Version $model
-    ) {}
+    ) {
+    }
 }

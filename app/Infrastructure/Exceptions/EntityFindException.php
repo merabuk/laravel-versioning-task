@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class EntityFindException extends DatabaseException
 {
     protected string $entityName = 'entity';
+
     protected string $field = 'ID';
 
     public function __construct(?string $field = null)

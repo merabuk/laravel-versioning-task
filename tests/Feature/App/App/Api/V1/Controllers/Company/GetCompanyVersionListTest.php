@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Feature\App\App\Api\V1\Controllers\Company;
+namespace Tests\Feature\App\App\Api\V1\Controllers\Company;
 
 use App\App\Api\V1\Controllers\Company\GetCompanyVersionListController;
 use App\Core\Versioning\Models\Version;
@@ -10,7 +10,7 @@ use App\Domain\Company\Models\Company;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\TestCase;
 
-class GetCompanyVersionListTest extends  TestCase
+class GetCompanyVersionListTest extends TestCase
 {
     private string $route = 'public-api.v1.company.item.versions';
 

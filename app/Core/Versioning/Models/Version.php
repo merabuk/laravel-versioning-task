@@ -17,21 +17,24 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $id
  * @property int $versionable_id
  * @property string $versionable_type
- * @property array $snapshot
+ * @property array<string, mixed> $snapshot
  * @property int $version
  * @property Carbon $created_at
- * @property-read Versionable $versionable
+ * @property-read Model&Versionable $versionable
  *
  * @method static VersionFactory factory($count = null, $state = [])
  */
 #[UseFactory(VersionFactory::class)]
 class Version extends Model
 {
+    /**
+     * @use HasFactory<VersionFactory>
+     */
     use HasFactory;
 
     public const ?string UPDATED_AT = null;
 
-    public StatusEnum $temporaryStatus;
+    public ?StatusEnum $temporaryStatus = null;
 
     protected $fillable = [
         'versionable_id',
@@ -44,6 +47,9 @@ class Version extends Model
         'version' => 1,
     ];
 
+    /**
+     * @return MorphTo<Model, $this>
+     */
     public function versionable(): MorphTo
     {
         return $this->morphTo();

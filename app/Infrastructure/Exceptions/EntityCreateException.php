@@ -4,4 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Exceptions;
 
-class EntityCreateException extends DatabaseException {}
+class EntityCreateException extends DatabaseException
+{
+}
