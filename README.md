@@ -12,6 +12,8 @@ A REST API for managing company records with automatic versioning. Built with La
 - [Deployment](#deployment)
   - [Prerequisites](#prerequisites)
   - [Quick Start](#quick-start)
+- [Code Quality](#code-quality)
+  - [Git Hooks](#git-hooks)
 - [Testing](#testing)
 - [Project Structure](#project-structure)
 
@@ -132,6 +134,44 @@ GET /api/v1/company/{edrpou}/versions
 
 The API is now available at `http://localhost`.
 
+---
+
+## Code Quality
+
+The project uses three tools for code quality, all available as Composer scripts:
+
+| Command             | Tool                         | Description                                          |
+|---------------------|------------------------------|------------------------------------------------------|
+| `composer lint`     | ECS (Easy Coding Standard)   | Check code style (PSR-12, clean code, Laravel rules) |
+| `composer lint:fix` | ECS                          | Check and auto-fix code style violations             |
+| `composer phpstan`  | PHPStan (level 8) + Larastan | Static analysis                                      |
+| `composer analyze`  | ECS + PHPStan                | Run both checks in sequence                          |
+
+Run any of them via Docker:
+
+```bash
+docker compose exec laravel.test composer lint
+docker compose exec laravel.test composer lint:fix
+docker compose exec laravel.test composer phpstan
+docker compose exec laravel.test composer analyze
+```
+
+### Git Hooks
+
+[GrumPHP](https://github.com/phpro/grumphp) enforces code quality on every commit by automatically running ECS, PHPStan, `composer validate`, YAML lint, and a blacklist check (blocks `dd()`, `dump()`, `die`, etc.).
+
+Initialize the git hooks after installing dependencies:
+
+```bash
+docker compose exec laravel.test php vendor/bin/grumphp git:init
+```
+
+From this point, every `git commit` will trigger all checks inside the Docker container. The commit is blocked if any check fails.
+
+For running all checks manually
+```bash
+docker compose exec laravel.test php vendor/bin/grumphp run
+```
 ---
 
 ## Testing
