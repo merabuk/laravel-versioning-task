@@ -34,10 +34,10 @@ class GetCompanyVersionListTest extends  TestCase
             ->assertExactJson($this->getExactServiceUnavailableError());
     }
 
-    public function testEdrpouValidationError(string $value, bool $expectError): void
+    public function testEdrpouValidationError(): void
     {
         $this->getJson(route($this->route, [
-            'edrpou' => '12345678',
+            'edrpou' => '00032113',
         ]))
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['edrpou']);
