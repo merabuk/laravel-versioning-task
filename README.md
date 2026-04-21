@@ -1,59 +1,165 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Company Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A REST API for managing company records with automatic versioning. Built with Laravel 12 using a Domain-Driven Design (DDD) architecture.
 
-## About Laravel
+## Table of Contents
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [API Endpoints](#api-endpoints)
+  - [Create or Update a Company](#create-or-update-a-company)
+  - [Get Company Version History](#get-company-version-history)
+- [Deployment](#deployment)
+  - [Prerequisites](#prerequisites)
+  - [Quick Start](#quick-start)
+- [Testing](#testing)
+- [Project Structure](#project-structure)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Create and update company records identified by EDRPOU (Ukrainian business identifier)
+- Automatic versioning — every change to a company record is tracked as a new version
+- Version statuses: `Created`, `Updated`, `Duplicate`
+- EDRPOU checksum validation
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- **PHP** 8.4
+- **Laravel** 12
+- **PostgreSQL** 18
+- **Redis** (cache & queues)
+- **Laravel Sail** (Docker-based dev environment)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## API Endpoints
 
-## Laravel Sponsors
+All endpoints are prefixed with `/api/v1`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Create or Update a Company
 
-### Premium Partners
+```
+POST /api/v1/company
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+**Request body:**
 
-## Contributing
+| Field     | Type   | Rules                                      |
+|-----------|--------|--------------------------------------------|
+| `name`    | string | Required, 1–256 characters                 |
+| `edrpou`  | string | Required, exactly 8 digits, valid checksum |
+| `address` | string | Required, 1–65535 characters               |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Response:** `200 OK` with the company resource.
 
-## Code of Conduct
+If a company with the given EDRPOU already exists, the record is updated and a new version is created.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+### Get Company Version History
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+GET /api/v1/company/{edrpou}/versions
+```
 
-## License
+**Response:** `200 OK` with a list of versions for the given EDRPOU.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Deployment
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) and Docker Compose
+
+### Quick Start
+
+1. **Clone the repository**
+
+   ```bash
+   git clone git@github.com:merabuk/laravel-versioning-task.git ueex-test-task
+   cd ueex-test-task
+   ```
+
+2. **Copy the environment file**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Configure the environment**
+
+   Open `.env` and set the following variables for Sail:
+
+   ```dotenv
+   APP_URL=http://localhost
+
+   DB_CONNECTION=pgsql
+   DB_HOST=pgsql
+   DB_PORT=5432
+   DB_DATABASE=laravel
+   DB_USERNAME=sail
+   DB_PASSWORD=password
+   ```
+
+4. **Start the Docker containers**
+
+   ```bash
+   docker compose up -d
+   ```
+
+5. **Install dependencies inside the running container**
+
+    ```bash
+   docker compose exec laravel.test composer install --no-interaction
+   ```
+
+6. **Generate the application key**
+
+   ```bash
+   docker compose exec laravel.test artisan key:generate
+   ```
+
+7. **Run database migrations**
+
+   ```bash
+   docker compose exec laravel.test artisan migrate
+   ```
+
+8. **(Optional) Seed the database**
+
+   ```bash
+   docker compose exec laravel.test artisan db:seed
+   ```
+
+The API is now available at `http://localhost`.
+
+---
+
+## Testing
+
+Run the full test suite:
+
+```bash
+docker compose exec laravel.test php artisan test
+```
+
+Tests use a dedicated `testing` PostgreSQL database (automatically created by Sail on first start).
+
+---
+
+## Project Structure
+
+```
+app/
+├── App/Api/V1/          # Controllers, Form Requests, API Resources, Routes
+├── Core/Versioning/     # Polymorphic versioning system (Model, Service, Trait)
+├── Domain/Company/      # Company domain (Model, Actions, Service, DTO, Migrations)
+└── Infrastructure/      # Exception handling, HTTP utilities
+
+database/
+├── migrations/          # Core Laravel migrations
+└── seeders/             # DatabaseSeeder → CompanySeeder
+
+tests/
+├── Feature/             # API endpoint tests
+└── Unit/                # Business logic and validator tests
+```
